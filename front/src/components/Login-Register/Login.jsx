@@ -13,7 +13,7 @@ const handleChange = (e) => {
     const value = e.target.value;
     setInput({ ...input, [key]: value });
   };
-const handleSubmit = (e)=>{
+const handleSignUp = (e)=>{
     e.preventDefault()
   
         auth.createUserWithEmailAndPassword(input.email,input.password)
@@ -24,6 +24,17 @@ const handleSubmit = (e)=>{
             if(e.code == 'auth/email-already-in-use')setMsgError('The email is already registered')
         })
 
+}
+
+const handleLogin = (e)=>{
+    e.preventDefault()
+    auth.signInWithEmailAndPassword(input.email,input.password)
+    .then(a=> console.log(a))
+    .catch((e)=>{
+        if(e.code == 'auth/invalid-email') setMsgError('Email is not registered')
+        if(e.code == 'auth/wrong-password') setMsgError('Incorrect password')
+        console.log(e.code)}
+    )
 }
 
     return (
@@ -63,11 +74,15 @@ const handleSubmit = (e)=>{
                             <div className="pass-link">
                             <Link to='#'>Forgot password?</Link>
                             </div>
+                            {
+                            msgError !== null ? <div style={{color:'red'}}>{msgError}</div> : null
+                            }
                             <div className="field btn">
                                 <div className="btn-layer">
-                                    <input type="submit" value="login"/>
+                                    <input type="submit" value="login" onClick={handleLogin} />
                                 </div>
                             </div>
+                        
                             <div className="signup-link">
                             Not a member? <Link to='#'>Signup now</Link>
                             </div>
@@ -89,7 +104,7 @@ const handleSubmit = (e)=>{
                         
                         <div className="field btn">
                             <div className="btn-layer">
-                                <input type="submit" value="signup" onClick={handleSubmit}/>
+                                <input type="submit" value="signup" onClick={handleSignUp}/>
                             </div>
                         </div>
                         

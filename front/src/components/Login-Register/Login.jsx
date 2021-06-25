@@ -6,6 +6,7 @@ import {auth} from '../../firebaseconfig'
 const Login = () => {
 const [toogle,setToogle]= useState(true)
 const [input, setInput] = useState([]);
+const [msgError,setMsgError] = useState(null)
 
 const handleChange = (e) => {
     const key = e.target.name;
@@ -14,13 +15,15 @@ const handleChange = (e) => {
   };
 const handleSubmit = (e)=>{
     e.preventDefault()
-    try {
+  
         auth.createUserWithEmailAndPassword(input.email,input.password)
-        alert("usuario registrado")
-        
-    } catch (e) {
-        console.log(e)
-    }
+        .then(a => alert("usuario registrado"))
+        .catch((e)=>{
+            if(e.code == 'auth/invalid-email') setMsgError('Invalid email format')
+            if(e.code == 'auth/weak-password')setMsgError('The password must have 6 characters or more')
+            if(e.code == 'auth/email-already-in-use')setMsgError('The email is already registered')
+        })
+
 }
 
     return (
@@ -80,6 +83,9 @@ const handleSubmit = (e)=>{
                         <div className="field">
                         <input type="password" name='confirm-password' placeholder="Confirm password" onChange={handleChange} required />
                         </div>
+                        {
+                            msgError !== null ? <div style={{color:'red'}}>{msgError}</div> : null
+                        }
                         
                         <div className="field btn">
                             <div className="btn-layer">

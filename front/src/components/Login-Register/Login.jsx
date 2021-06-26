@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import './Login.css'
 import {auth} from '../../firebaseconfig'
 
@@ -7,6 +7,8 @@ const Login = () => {
 const [toogle,setToogle]= useState(true)
 const [input, setInput] = useState([]);
 const [msgError,setMsgError] = useState(null)
+
+const history = useHistory();
 
 const handleChange = (e) => {
     const key = e.target.name;
@@ -29,7 +31,7 @@ const handleSignUp = (e)=>{
 const handleLogin = (e)=>{
     e.preventDefault()
     auth.signInWithEmailAndPassword(input.email,input.password)
-    .then(a=> console.log(a))
+    .then(a=> history.push("/EmployerHome"))
     .catch((e)=>{
         if(e.code == 'auth/invalid-email') setMsgError('Email is not registered')
         if(e.code == 'auth/wrong-password') setMsgError('Incorrect password')

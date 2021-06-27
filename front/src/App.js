@@ -1,4 +1,4 @@
-import EmployerHome from './components/EmployerHome/EmployerHome'
+import EmployerHome from './components/Containers/EmployerHome'
 import {Switch,Route,Redirect} from 'react-router-dom'
 import Login from './components/Login-Register/Login'
 
